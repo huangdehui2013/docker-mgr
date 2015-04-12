@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>      
+    <meta charset="UTF-8">
+    <title>index</title>     
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
+    {% block head_css %}
+     <link href="/static/css/index.css" rel="stylesheet"></link>
+    {% end %}
+    {% block extends_css %}
+    {% end %}
+</head>     
+<body>  
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">HOME-lrj</a>
+      <a class="navbar-brand" href="http://localhost:3000/" target="self">flowmonitor</a>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="jumbotron">
+  <h1>Hello, lrj</h1>
+  <p>docker + ovs + vxlan </p>
+</div> 
+        <form action="/" method="POST" class="form-inline" >
+                <input type="text" class="form-control" value="" name="name">
+                <input type="submit" class="btn btn-default" value="create container" name="submit">
+        </form>
+        <script src="/static/jquery/dist/jquery.min.js"></script>
+        <script src="/static/bootstrap/dist/js/bootstrap.js"></script>
+        {% block body_js %}
+        <script src="/static/js/index.js"></script>
+        {% end %}
+        {% block extends_js %}
+        {% end %}
+<p></p>
+<div>
+<table class="table">
+<tr>
+<th>container Id</th>
+<th>container Name</th>
+<th>container Status</th>
+<th>container Image</th>
+<th>host</th>
+<th>container firewall </th>
+</tr>
+{% for h in containers %}
+{% set host=h["host"] %}
+{% set ens= h["containers"] %}
+{% for c in ens%}
+<tr>
+  <td class="active">{{c["Id"]}}</td>
+  <td class="success">{{c["Names"][0]}}</td>
+  <td class="info">{{c["Status"]}}</td>
+  <td class="warning">{{c["Image"]}}</td>
+  <td class="success">{{host}}</td>
+ <td class="danger">
+ <form action="/exec" method="POST" class="form-inline" >
+                <input type="text" class="form-control" value="" name="cmd">
+                <input type="hidden" class="form-control" value='{{c["Id"]}}' name="containerId">
+                <input type="submit" class="btn btn-primary" value="setting firewall" name="submit">
+</form>
+</td>
+</tr>
+{% end %} 
+{% end %}
+</table>
+</div>
+
+</body>     
+</html>
+	
